@@ -1,0 +1,134 @@
+.buildings-layout {
+    --s: 100px;  /* size  */
+    --m: 4px;    /* margin */
+    --f: calc(1.732 * var(--s) + 4 * var(--m)  - 1px);
+    --food-color: #FF0;
+    --wood-color: #3cff00;
+    --clay-color: #ff7300;
+    --iron-color: #727272;
+}
+
+.buildings-layout {
+    margin: 0 20px 0 0;
+}
+
+.buildings-layout, .buildings-layout a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.buildings-layout > div {
+    display: flex;
+    flex-direction: row;
+}
+
+.buildings-layout a {
+    height: 115px;
+    width: 100px;
+    margin: -15px 0;
+    overflow: visible;
+}
+
+.buildings-layout a .hexagon {
+    width: var(--s);
+    margin: var(--m);
+    height: calc(var(--s)*1.1547); 
+    display: inline-block;
+    font-size:initial;
+    clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+    margin-bottom: calc(var(--m) - var(--s)*0.2885);
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buildings-layout a .hexagon-food {
+    background-color: var(--food-color);
+}
+
+.buildings-layout a .hexagon-clay {
+    background-color: var(--clay-color);
+}
+
+.buildings-layout a .hexagon-iron {
+    background-color: var(--iron-color);
+}
+
+.buildings-layout a .hexagon-wood {
+    background-color: var(--wood-color);
+}
+
+.buildings-layout a .hexagon-village {
+    background-image: url('./img/hexagon.png');
+    background-size: 100px;
+}
+
+.resource-generation-summary, .resource-generation-summary div {
+    display: flex;
+}
+
+.resource-generation-summary {
+    flex-direction: column;
+}
+
+.resource-generation-summary div {
+    padding: 5px;
+}
+
+.resource-generation-summary div img {
+    margin: auto 8px auto 0;
+    height: 20px;
+}
+
+.resource-generation-summary div p {
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.resource-generation-summary div p:nth-child(2) {
+    width: 70px;
+}
+
+.resource-generation-summary div p:nth-child(4) {
+    min-width: 70px;
+}
+
+.resource-generation-summary div p.bold {
+    font-weight: bold;
+    min-width: 50px;
+    text-align: right;
+    margin: 0 10px 0 0;
+}
+
+.main-panel {
+    display: flex;
+    margin: 0 0 50px 0;
+}
+
+.build-queue-list {
+    max-height: 100px;
+    overflow: scroll;
+}
+
+.build-queue .build-queue-element {
+    display: flex;
+    height: 30px;
+}
+
+.build-queue .build-queue-element p {
+    margin: 0 5px;
+    padding: 0;
+    text-align: left;
+}
+
+.build-queue .build-queue-element p:nth-child(2) {
+    min-width: 300px;
+}
+
+.build-queue .build-queue-element p:nth-child(3) {
+    min-width: 200px;
+}

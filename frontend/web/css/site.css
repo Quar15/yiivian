@@ -1,0 +1,99 @@
+:root{
+    --text-main: #333;
+    --text-main-dark: #CCC;
+    --text-hover: #1111a5;
+    --background-main-dark: #111;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--background-main);
+    margin: 0;
+    padding: 0;
+}
+
+h3 {
+    text-align: left;
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-main);
+}
+
+p {
+    margin: 0;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: var(--text-hover);
+}
+
+nav, nav .buttons, nav .resources-status, nav .resources-status .resource-status-element, .wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+nav {
+    flex-direction: column;
+}
+
+nav .buttons .nav-main-btn {
+    text-decoration: none;
+    color: var(--text-main);
+    margin: 10px;
+}
+
+nav .buttons .nav-main-btn h2 {
+    font-size: 18px;
+}
+
+nav .buttons .nav-main-btn .main-btn-border {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav .buttons .nav-main-btn .main-btn-border::before {
+    content: "";
+    position: absolute;
+    background: url("./img/circle_frame.png") center no-repeat;
+    height: 100px;
+    width: 100px;
+    background-size: 100px;
+    transition: transform .5s ease-in-out;
+}
+
+nav .buttons .nav-main-btn .main-btn-border img {
+    height: 90px;
+    width: 90px;
+}
+
+nav .buttons .nav-main-btn:hover .main-btn-border::before {
+    transform: rotate(30deg);
+}
+
+nav .buttons .nav-main-btn:hover h2 {
+    color: var(--text-hover);
+    text-decoration: underline;
+}
+
+nav .resources-status {
+    margin: 0 0 20px 0;
+}
+
+nav .resources-status .resource-status-element p{
+    margin: 10px 10px 10px 2px;
+    padding: 0;
+}
+
+.wrapper {
+    width: 80vw;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
