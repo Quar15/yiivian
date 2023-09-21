@@ -3,7 +3,9 @@
 use frontend\controllers\SiteController;
 
 return [
-    'index' => SiteController::ROUTE_INDEX,
+    '' => SiteController::ROUTE_INDEX,
+    'village' => SiteController::ROUTE_VILLAGE,
+    'resources' => SiteController::ROUTE_RESOURCES,
     'signup' => SiteController::ROUTE_REGISTER,
     'login' => SiteController::ROUTE_LOGIN
 ];

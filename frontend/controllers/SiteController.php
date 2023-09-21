@@ -25,9 +25,8 @@ class SiteController extends Controller
 
     private const ROUTE_BASE = '/' . self::CONTROLLER_ID . '/';
     
-    private const ACTION_INDEX = 'index';
-    private const ACTION_ABOUT = 'about';
-    private const ACTION_CONTACT = 'contact';
+    private const ACTION_RESOURCES = 'resources';
+    private const ACTION_VILLAGE = 'village';
     private const ACTION_REGISTER = 'signup';
     private const ACTION_LOGIN = 'login';
     private const ACTION_LOGOUT = 'logout';
@@ -79,15 +78,17 @@ class SiteController extends Controller
         ];
     }
 
-    const ROUTE_INDEX = self::ROUTE_BASE . self::ACTION_INDEX;
-    /**
-     * Displays homepage.
-     *
-     * @return mixed
-     */
-    public function actionIndex()
+    const ROUTE_INDEX = self::ROUTE_BASE . self::ACTION_VILLAGE;
+    const ROUTE_VILLAGE = self::ROUTE_BASE . self::ACTION_VILLAGE;
+    public function actionVillage()
     {
         return $this->render('village');
+    }
+
+    const ROUTE_RESOURCES = self::ROUTE_BASE . self::ACTION_RESOURCES;
+    public function actionResources() 
+    {
+        return $this->render('resources');
     }
 
     const ROUTE_LOGIN = self::ROUTE_BASE . self::ACTION_LOGIN;
@@ -127,7 +128,6 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    const ROUTE_CONTACT = self::ROUTE_BASE . self::ACTION_CONTACT;
     /**
      * Displays contact page.
      *
@@ -151,7 +151,6 @@ class SiteController extends Controller
         ]);
     }
 
-    const ROUTE_ABOUT = self::ROUTE_BASE . self::ACTION_ABOUT;
     /**
      * Displays about page.
      *
