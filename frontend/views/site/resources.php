@@ -5,7 +5,7 @@ use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 
-$this->title = 'Yiivian - Resources';
+$this->title = 'Resources';
 ?>
 
 <div class="main-panel">
