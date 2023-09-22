@@ -82,12 +82,14 @@ class SiteController extends Controller
     const ROUTE_VILLAGE = self::ROUTE_BASE . self::ACTION_VILLAGE;
     public function actionVillage()
     {
+        $this->layout = 'buildings-layout';
         return $this->render('village');
     }
 
     const ROUTE_RESOURCES = self::ROUTE_BASE . self::ACTION_RESOURCES;
     public function actionResources() 
     {
+        $this->layout = 'buildings-layout';
         return $this->render('resources');
     }
 

@@ -30,41 +30,7 @@ AppAsset::register($this);
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
     <nav>
-        <div class="buttons">
-            <a class="nav-main-btn" href="<?= Url::to(['site/resources']) ?>"><div class="main-btn-border"><?= Html::img("@web/img/icon-placeholder.png") ?></div><h2>Resources</h2></a>
-            <a class="nav-main-btn" href="<?= Url::to(['site/village']) ?>"><div class="main-btn-border"><?= Html::img("@web/img/icon-placeholder.png") ?></div><h2>Village</h2></a>
-            <a class="nav-main-btn" href="#"><div class="main-btn-border"><?= Html::img("@web/img/icon-placeholder.png") ?></div><h2>Army</h2></a>
-            <a class="nav-main-btn" href="#"><div class="main-btn-border"><?= Html::img("@web/img/icon-placeholder.png") ?></div><h2>Messages</h2></a>
-        </div>
-        <div class="resources-status">
-            <div class="resource-status-element">
-                <?= Html::img("@web/img/lumber_small.png")?>
-                <p>999/999</p>
-            </div>
-            <div class="resource-status-element">
-                <?= Html::img("@web/img/clay_small.png")?>
-                <p>999/999</p>
-            </div>
-            <div class="resource-status-element">
-                <?= Html::img("@web/img/iron_small.png")?>
-                <p>999/999</p>
-            </div>
-            <div class="resource-status-element">
-                <?= Html::img("@web/img/wheat_small.png")?>
-                <p>999/999</p>
-            </div>
-            <div class="resource-status-element">
-                <?= Html::img("@web/img/wheat_small.png")?>
-                <p>0/0</p>
-            </div>
-        </div>
     </nav>
-
-    <?php
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-    }
-    ?>
 
     <div class="wrapper">
         <?= $content ?> 

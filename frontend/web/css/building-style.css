@@ -6,17 +6,34 @@
     --wood-color: #3cff00;
     --clay-color: #ff7300;
     --iron-color: #727272;
+    --empty-color: #969696;
+    --building-color: #c77a07;
+    --level-border-color: #313131;
 }
 
 .buildings-layout {
     margin: 0 20px 0 0;
 }
 
-.buildings-layout, .buildings-layout a {
+.buildings-layout a .hexagon {
+    width: var(--s);
+    margin: var(--m);
+    height: calc(var(--s)*1.1547); 
+    display: inline-block;
+    font-size:initial;
+    clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+    margin-bottom: calc(var(--m) - var(--s)*0.2885);
+    background-color: black;
+}
+
+.buildings-layout, .buildings-layout a, .buildings-layout a .hexagon, .buildings-layout a .hexagon p.building-level {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.buildings-layout, .buildings-layout a, .buildings-layout a .hexagon {
+    flex-direction: column;
 }
 
 .buildings-layout > div {
@@ -31,18 +48,18 @@
     overflow: visible;
 }
 
-.buildings-layout a .hexagon {
-    width: var(--s);
-    margin: var(--m);
-    height: calc(var(--s)*1.1547); 
-    display: inline-block;
-    font-size:initial;
-    clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
-    margin-bottom: calc(var(--m) - var(--s)*0.2885);
-    background-color: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.buildings-layout a .hexagon p {
+    margin: 0;
+    padding: 0;
+    font-size: smaller;
+}
+
+.buildings-layout a .hexagon p.building-level {
+    height: 31px;
+    width: 31px;
+    border: 2px solid var(--level-border-color);
+    border-radius: 50%;
+    margin: 3px;
 }
 
 .buildings-layout a .hexagon-food {
@@ -61,9 +78,16 @@
     background-color: var(--wood-color);
 }
 
+.buildings-layout a .hexagon-building {
+    background-color: var(--building-color);
+}
+
+.buildings-layout a .hexagon-empty {
+    background-color: var(--empty-color);
+}
+
 .buildings-layout a .hexagon-village {
-    background-image: url('./img/hexagon.png');
-    background-size: 100px;
+    background-color: var(--building-color);
 }
 
 .resource-generation-summary, .resource-generation-summary div {
@@ -79,8 +103,7 @@
 }
 
 .resource-generation-summary div img {
-    margin: auto 8px auto 0;
-    height: 20px;
+    margin: 0 8px 0 0;
 }
 
 .resource-generation-summary div p {
