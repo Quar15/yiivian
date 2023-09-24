@@ -4,7 +4,7 @@ return [
     'components' => [
         'db' => [
             'class' => \yii\db\Connection::class,
-            'dsn' => 'pgsql:host=localhost;dbname=browser-game',
+            'dsn' => 'pgsql:host=localhost;dbname=yiivian',
             'username' => 'postgres',
             'password' => '',
             'charset' => 'utf8',
