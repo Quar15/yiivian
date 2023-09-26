@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
 
@@ -17,6 +17,13 @@ use Yii;
  */
 class Village extends \yii\db\ActiveRecord
 {
+
+    public const TABLE_NAME = 'village';
+
+    public const FIELD_ID = 'id';
+    public const FIELD_NAME = 'name';
+    public const FIELD_USER_ID = 'user_id';
+
     /**
      * {@inheritdoc}
      */
