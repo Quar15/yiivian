@@ -4,6 +4,7 @@
 /** @var string $content */
 
 use frontend\assets\BuildingsAsset;
+use frontend\widgets\ResourceStatusWidget;
 use yii\bootstrap5\Html;
 use yii\helpers\Url;
 
@@ -36,28 +37,7 @@ BuildingsAsset::register($this);
             <a class="nav-main-btn" href="#"><div class="main-btn-border"><?= Html::img("@web/img/icon-placeholder.png") ?></div><h2>Army</h2></a>
             <a class="nav-main-btn" href="#"><div class="main-btn-border"><?= Html::img("@web/img/icon-placeholder.png") ?></div><h2>Messages</h2></a>
         </div>
-        <div class="resources-status">
-            <div class="resource-status-element">
-                <?= Html::img("@web/img/lumber_small.png")?>
-                <p>999/999</p>
-            </div>
-            <div class="resource-status-element">
-                <?= Html::img("@web/img/clay_small.png")?>
-                <p>999/999</p>
-            </div>
-            <div class="resource-status-element">
-                <?= Html::img("@web/img/iron_small.png")?>
-                <p>999/999</p>
-            </div>
-            <div class="resource-status-element">
-                <?= Html::img("@web/img/wheat_small.png")?>
-                <p>999/999</p>
-            </div>
-            <div class="resource-status-element">
-                <?= Html::img("@web/img/wheat_small.png")?>
-                <p>0/0</p>
-            </div>
-        </div>
+        <?= ResourceStatusWidget::widget() ?>
     </nav>
 
     <div class="wrapper">

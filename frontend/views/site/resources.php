@@ -8,6 +8,11 @@ use yii\helpers\Url;
 $this->title = 'Resources';
 ?>
 
+<?= $resources['wood']['value'] ?>
+<?= $resources['clay']['value'] ?>
+<?= $resources['iron']['value'] ?>
+<?= $resources['wheat']['value'] ?>
+
 <div class="main-panel">
     <div class="buildings-layout">
         <div>
@@ -29,10 +34,10 @@ $this->title = 'Resources';
     <div>
         <div class="resource-generation-summary">
             <h3>Production</h3>
-            <div><?= Html::img("@web/img/lumber_small.png")?><p>Wood:</p><p class="bold">2</p><p>per hour</p></div>
-            <div><?= Html::img("@web/img/clay_small.png")?><p>Clay:</p><p class="bold">2</p><p>per hour</p></div>
-            <div><?= Html::img("@web/img/iron_small.png")?><p>Iron:</p><p class="bold">2</p><p>per hour</p></div>
-            <div><?= Html::img("@web/img/wheat_small.png")?><p>Wheat:</p><p class="bold">9999</p><p>per hour</p></div>
+            <div><?= Html::img("@web/img/lumber_small.png")?><p>Wood:</p><p class="bold"><?= $resources['wood']['generationPerHour'] ?></p><p>per hour</p></div>
+            <div><?= Html::img("@web/img/clay_small.png")?><p>Clay:</p><p class="bold"><?= $resources['clay']['generationPerHour'] ?></p><p>per hour</p></div>
+            <div><?= Html::img("@web/img/iron_small.png")?><p>Iron:</p><p class="bold"><?= $resources['iron']['generationPerHour'] ?></p><p>per hour</p></div>
+            <div><?= Html::img("@web/img/wheat_small.png")?><p>Wheat:</p><p class="bold"><?= $resources['wheat']['generationPerHour'] ?></p><p>per hour</p></div>
         </div>
         <div class="units-summary">
             <h3>Troops</h3>

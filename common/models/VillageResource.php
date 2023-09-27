@@ -17,6 +17,18 @@ use Yii;
  */
 class VillageResource extends \yii\db\ActiveRecord
 {
+
+    public const RESOURCE_WOOD = 'wood';
+    public const RESOURCE_CLAY = 'clay';
+    public const RESOURCE_IRON = 'iron';
+    public const RESOURCE_WHEAT = 'wheat';
+
+
+    public const RESOURCE_WOOD_TYPE_VALUE = 1;
+    public const RESOURCE_CLAY_TYPE_VALUE = 2;
+    public const RESOURCE_IRON_TYPE_VALUE = 3;
+    public const RESOURCE_WHEAT_TYPE_VALUE = 4;
+
     /**
      * {@inheritdoc}
      */
@@ -60,6 +72,18 @@ class VillageResource extends \yii\db\ActiveRecord
     public function getVillage()
     {
         return $this->hasOne(Village::class, ['id' => 'village_id']);
+    }
+
+    public function getResourceNameByType(): string
+    {
+        $resourceNames = [
+            self::RESOURCE_WOOD_TYPE_VALUE => self::RESOURCE_WOOD, 
+            self::RESOURCE_CLAY_TYPE_VALUE => self::RESOURCE_CLAY, 
+            self::RESOURCE_IRON_TYPE_VALUE => self::RESOURCE_IRON, 
+            self::RESOURCE_WHEAT_TYPE_VALUE => self::RESOURCE_WHEAT, 
+        ];
+
+        return $resourceNames[$this->resource_type];
     }
 }
 

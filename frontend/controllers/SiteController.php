@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\Village;
 use common\models\VillageResource;
+use common\models\VillageResourceSet;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -86,25 +87,8 @@ class SiteController extends Controller
     {
         $this->layout = 'buildings-layout';
 
-        if (\Yii::$app->getUser()->isGuest)
-            return $this->render('village');
-
-        $village = Village::find()
-            ->where([Village::FIELD_USER_ID => \Yii::$app->getUser()->getId()])
-            ->one();
-
-        $resources = $village->getVillageResources()->all();
-
         return $this->render(
             'village', 
-            [
-                'resources' => [
-                    'wood' => $resources[0]->value,
-                    'clay' => $resources[1]->value,
-                    'iron' => $resources[2]->value,
-                    'wheat' => $resources[3]->value
-                ]
-            ]
         );
     }
 
@@ -116,16 +100,18 @@ class SiteController extends Controller
         if (\Yii::$app->getUser()->isGuest)
             return $this->render('resources'); 
         
-        return $this->render('resources', 
+        $village = Village::find()
+            ->where([Village::FIELD_USER_ID => \Yii::$app->getUser()->getId()])
+            ->one();
+
+        $resourceSet = new VillageResourceSet($village);
+
+        return $this->render(
+            'resources', 
             [
-                'resources' => [
-                    'wood' => 100,
-                    'clay' => 101,
-                    'iron' => 102,
-                    'wheat' => 103
-                ],
+                'resources' => $resourceSet->getResourceSet()
             ]
-        ); 
+        );
     }
 
     const ROUTE_LOGIN = self::ROUTE_BASE . self::ACTION_LOGIN;

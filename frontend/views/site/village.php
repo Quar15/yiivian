@@ -8,11 +8,6 @@ use yii\helpers\Url;
 $this->title = 'Village';
 ?>
 
-<?= $resources['wood'] ?>
-<?= $resources['clay'] ?>
-<?= $resources['iron'] ?>
-<?= $resources['wheat'] ?>
-
 <div class="main-panel">
     <div class="buildings-layout">
         <div>
