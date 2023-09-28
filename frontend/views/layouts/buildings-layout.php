@@ -9,6 +9,9 @@ use yii\bootstrap5\Html;
 use yii\helpers\Url;
 
 BuildingsAsset::register($this);
+
+$resourceSets = \Yii::$app->user->identity->resourceSets;
+$currVillageResourceSet = $resourceSets[array_key_first($resourceSets)];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -37,7 +40,7 @@ BuildingsAsset::register($this);
             <a class="nav-main-btn" href="#"><div class="main-btn-border"><?= Html::img("@web/img/icon-placeholder.png") ?></div><h2>Army</h2></a>
             <a class="nav-main-btn" href="#"><div class="main-btn-border"><?= Html::img("@web/img/icon-placeholder.png") ?></div><h2>Messages</h2></a>
         </div>
-        <?= ResourceStatusWidget::widget() ?>
+        <?= ResourceStatusWidget::widget(['resourceSet' => $currVillageResourceSet]) ?>
     </nav>
 
     <div class="wrapper">

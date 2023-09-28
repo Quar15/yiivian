@@ -4,11 +4,11 @@ namespace frontend\widgets;
 
 use yii\base\Widget;
 use yii\bootstrap5\Html;
-use common\models\Village;
-use common\models\VillageResourceSet;
 
 class ResourceStatusWidget extends Widget
 {
+    public array $resourceSet;
+
     public function init()
     {
         parent::init();
@@ -16,14 +16,8 @@ class ResourceStatusWidget extends Widget
 
     public function run(): string
     {
-        $village = Village::find()
-            ->where([Village::FIELD_USER_ID => \Yii::$app->getUser()->getId()])
-            ->one();
-
-        $resources = $village->getResourceSet();
-
         $elements = '<div class="resources-status">';
-        foreach ($resources as $resourceName => $resource) {
+        foreach ($this->resourceSet as $resourceName => $resource) {
             $elements .= '<div class="resource-status-element">';
             $elements .= Html::img("@web/img/" . $resourceName . "_small.png");
             $elements .= '<p>' . $resource['value'] . '/' . $resource['maxValue'] . '</p>';
