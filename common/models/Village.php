@@ -24,6 +24,8 @@ class Village extends \yii\db\ActiveRecord
     public const FIELD_NAME = 'name';
     public const FIELD_USER_ID = 'user_id';
 
+    private array $resources;
+
     /**
      * {@inheritdoc}
      */
@@ -86,6 +88,29 @@ class Village extends \yii\db\ActiveRecord
     public function getVillageResources()
     {
         return $this->hasMany(VillageResource::class, ['village_id' => 'id']);
+    }
+
+    public function initResourceSet()
+    {
+        $villageResources = $this->getVillageResources()->all();
+        foreach ($villageResources as $villageResource) {
+            $this->resources[$villageResource->getResourceNameByType()] = [
+                'value' => $villageResource->value,
+                'maxValue' => $villageResource->max_value,
+                'generationPerHour' => $villageResource->generation_per_hour
+            ];
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getResourceSet(): array
+    {
+        if (! isset($this->resources)) {
+            $this->initResourceSet();
+        }
+        return $this->resources;
     }
 }
 

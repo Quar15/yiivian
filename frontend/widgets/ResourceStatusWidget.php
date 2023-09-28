@@ -20,8 +20,7 @@ class ResourceStatusWidget extends Widget
             ->where([Village::FIELD_USER_ID => \Yii::$app->getUser()->getId()])
             ->one();
 
-        $resourceSet = new VillageResourceSet($village);
-        $resources = $resourceSet->getResourceSet();
+        $resources = $village->getResourceSet();
 
         $elements = '<div class="resources-status">';
         foreach ($resources as $resourceName => $resource) {
