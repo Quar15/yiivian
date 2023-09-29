@@ -104,12 +104,11 @@ class SiteController extends Controller
             ->where([Village::FIELD_USER_ID => \Yii::$app->getUser()->getId()])
             ->one();
 
-        $resourceSet = $village->getResourceSet();
-
         return $this->render(
             'resources', 
             [
-                'resources' => $resourceSet
+                'village' => $village,
+                'resources' => $village->getResourceSet(),
             ]
         );
     }

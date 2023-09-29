@@ -11,12 +11,22 @@ use Yii;
  * @property int $building_type_id
  * @property int $village_id
  * @property int $slot
+ * @property int $slot_type
+ * @property int $resource_type
+ * @property int $level
  *
  * @property BuildingType $buildingType
  * @property Village $village
  */
 class Building extends \yii\db\ActiveRecord
 {
+
+    public const FIELD_SLOT_TYPE = 'slot_type';
+
+    public const SLOT_TYPE_UTILITY = 0;
+    public const SLOT_TYPE_VILLAGE = 1;
+    public const SLOT_TYPE_RESOURCES = 2;
+
     /**
      * {@inheritdoc}
      */
