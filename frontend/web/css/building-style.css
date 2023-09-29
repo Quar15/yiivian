@@ -2,7 +2,7 @@
     --s: 100px;  /* size  */
     --m: 4px;    /* margin */
     --f: calc(1.732 * var(--s) + 4 * var(--m)  - 1px);
-    --food-color: #FF0;
+    --wheat-color: #FF0;
     --wood-color: #3cff00;
     --clay-color: #ff7300;
     --iron-color: #727272;
@@ -62,8 +62,12 @@
     margin: 3px;
 }
 
-.buildings-layout a .hexagon-food {
-    background-color: var(--food-color);
+.buildings-layout a .hexagon.hexagon-village p.building-level {
+    border: none;
+}
+
+.buildings-layout a .hexagon-wheat {
+    background-color: var(--wheat-color);
 }
 
 .buildings-layout a .hexagon-clay {

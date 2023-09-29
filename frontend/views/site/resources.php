@@ -1,32 +1,116 @@
 <?php
 
+use common\models\VillageResource;
 use frontend\widgets\ResourceProductionStatusWidget;
+use frontend\widgets\ResourceLayoutWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 
 $this->title = 'Resources';
+
+$testingResourceBuildingsList = [
+    [
+        'slot' => 1,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_WOOD_TYPE_VALUE,
+    ],
+    [
+        'slot' => 2,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_WHEAT_TYPE_VALUE,
+    ],
+    [
+        'slot' => 3,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_WOOD_TYPE_VALUE,
+    ],
+    [
+        'slot' => 4,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_IRON_TYPE_VALUE,
+    ],
+    [
+        'slot' => 5,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_CLAY_TYPE_VALUE,
+    ],
+    [
+        'slot' => 6,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_CLAY_TYPE_VALUE,
+    ],
+    [
+        'slot' => 7,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_IRON_TYPE_VALUE,
+    ],
+    [
+        'slot' => 8,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_WHEAT_TYPE_VALUE,
+    ],
+    [
+        'slot' => 9,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_WHEAT_TYPE_VALUE,
+    ],
+    [
+        'slot' => 10,
+        'level' => 0,
+        'resource_type' => -1,
+    ],
+    [
+        'slot' => 11,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_IRON_TYPE_VALUE,
+    ],
+    [
+        'slot' => 12,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_IRON_TYPE_VALUE,
+    ],
+    [
+        'slot' => 13,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_WHEAT_TYPE_VALUE,
+    ],
+    [
+        'slot' => 14,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_WHEAT_TYPE_VALUE,
+    ],
+    [
+        'slot' => 15,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_WOOD_TYPE_VALUE,
+    ],
+    [
+        'slot' => 16,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_WHEAT_TYPE_VALUE,
+    ],
+    [
+        'slot' => 17,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_CLAY_TYPE_VALUE,
+    ],
+    [
+        'slot' => 18,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_WOOD_TYPE_VALUE,
+    ],
+    [
+        'slot' => 19,
+        'level' => 0,
+        'resource_type' => VillageResource::RESOURCE_CLAY_TYPE_VALUE,
+    ],
+];
 ?>
 
 <div class="main-panel">
-    <div class="buildings-layout">
-        <div>
-            <a href="#1"><div class="hexagon hexagon-wood"><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-food"><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-wood"><p class="building-level">00</p></div></a>
-        </div>
-        <div>
-            <a href="#2"><div class="hexagon hexagon-iron"><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-clay"><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-clay"><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-iron"><p class="building-level">00</p></div></a>
-        </div>
-        <div>
-<a href="#3"><div class="hexagon hexagon-food"><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-food"><p class="building-level">00</p></div></a><a href="<?= Url::to(['site/village']) ?>"><div class="hexagon hexagon-village"><p>Village</p></div></a><a href="#"><div class="hexagon hexagon-iron"><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-iron"><p class="building-level">00</p></div></a>
-        </div>
-        <div>
-            <a href="#3"><div class="hexagon hexagon-food"><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-food"><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-wood"><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-food"><p class="building-level">00</p></div></a>
-        </div>
-        <div>
-            <a href="#5"><div class="hexagon hexagon-clay"><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-wood"><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-clay"><p class="building-level">00</p></div></a>
-        </div>
-    </div>
+    <?= ResourceLayoutWidget::widget([ResourceLayoutWidget::VILLAGE_RESOURCE_BUILDINGS_LIST => $testingResourceBuildingsList]); ?>
     <div>
         <?= ResourceProductionStatusWidget::widget([ResourceProductionStatusWidget::RESOURCE_SET => $resources]);  ?>
         <div class="units-summary">
