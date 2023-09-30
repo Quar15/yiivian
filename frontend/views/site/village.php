@@ -1,31 +1,18 @@
 <?php
 
+use frontend\widgets\VillageLayoutWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 
+$villages = \Yii::$app->user->identity->villages;
+$currVillage = $villages[array_key_first($villages)];
 $this->title = 'Village';
 ?>
 
 <div class="main-panel">
-    <div class="buildings-layout">
-        <div>
-            <a href="#1"><div class="hexagon hexagon-building"><p>Building Built</p><p class="building-level">1</p></div></a><a href="#"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a>
-        </div>
-        <div>
-            <a href="#2"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a>
-        </div>
-        <div>
-            <a href="#3"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-village"><p>Main Building</p><p class="building-level">1</p></div></a><a href="#"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a>
-        </div>
-        <div>
-            <a href="#3"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a>
-        </div>
-        <div>
-            <a href="#5"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a><a href="#"><div class="hexagon hexagon-empty"><p>Building Name</p><p class="building-level">00</p></div></a>
-        </div>
-    </div>
+    <?= VillageLayoutWidget::widget([VillageLayoutWidget::VILLAGE_BUILDINGS_LIST => $currVillage->getVillageBuildings()]) ?>
 </div>
 <div class="build-queue">
     <h3>Building:</h3>

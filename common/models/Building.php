@@ -14,6 +14,7 @@ use Yii;
  * @property int $slot_type
  * @property int $resource_type
  * @property int $level
+ * @property int $bulding_type_info_id
  *
  * @property BuildingType $buildingType
  * @property Village $village
@@ -80,6 +81,14 @@ class Building extends \yii\db\ActiveRecord
     public function getVillage()
     {
         return $this->hasOne(Village::class, ['id' => 'village_id']);
+    }
+
+    public function getBuildingTypeInfo()
+    {
+        return $this
+            ->hasOne(BuildingTypeInfo::class, ['id' => 'building_type_info_id'])
+            ->cache()
+            ->one();
     }
 }
 

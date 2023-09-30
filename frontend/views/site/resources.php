@@ -8,13 +8,15 @@ use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 
+$villages = \Yii::$app->user->identity->villages;
+$currVillage = $villages[array_key_first($villages)];
 $this->title = 'Resources';
 ?>
 
 <div class="main-panel">
-    <?= ResourceLayoutWidget::widget([ResourceLayoutWidget::VILLAGE_RESOURCE_BUILDINGS_LIST => $village->getResourceBuildings()]); ?>
+    <?= ResourceLayoutWidget::widget([ResourceLayoutWidget::VILLAGE_RESOURCE_BUILDINGS_LIST => $currVillage->getResourceBuildings()]); ?>
     <div>
-        <?= ResourceProductionStatusWidget::widget([ResourceProductionStatusWidget::RESOURCE_SET => $resources]);  ?>
+        <?= ResourceProductionStatusWidget::widget([ResourceProductionStatusWidget::RESOURCE_SET => $currVillage->getResourceSet()]);  ?>
         <div class="units-summary">
             <h3>Troops</h3>
             <p>None</p>

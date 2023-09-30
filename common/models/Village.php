@@ -67,17 +67,31 @@ class Village extends \yii\db\ActiveRecord
      */
     public function getBuildings()
     {
-        return $this->hasMany(Building::class, ['village_id' => 'id']);
+        return $this
+            ->hasMany(Building::class, ['village_id' => 'id'])
+            ->cache(5);
     }
 
     public function getResourceBuildings()
     {
-
         return $this->getBuildings()
             ->where(
                 [
                     Building::FIELD_SLOT_TYPE => [
                         Building::SLOT_TYPE_RESOURCES, 
+                        Building::SLOT_TYPE_UTILITY
+                    ]
+                ]
+            )->all();
+    }
+
+    public function getVillageBuildings()
+    {
+        return $this->getBuildings()
+            ->where(
+                [
+                    Building::FIELD_SLOT_TYPE => [
+                        Building::SLOT_TYPE_VILLAGE, 
                         Building::SLOT_TYPE_UTILITY
                     ]
                 ]
@@ -101,7 +115,9 @@ class Village extends \yii\db\ActiveRecord
      */
     public function getVillageResources()
     {
-        return $this->hasMany(VillageResource::class, ['village_id' => 'id']);
+        return $this
+            ->hasMany(VillageResource::class, ['village_id' => 'id'])
+            ->cache(5);
     }
 
     public function initResourceSet()

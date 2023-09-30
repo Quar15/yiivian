@@ -112,19 +112,8 @@ class SiteController extends Controller
     {
         $this->layout = 'buildings-layout';
         
-        if (\Yii::$app->getUser()->isGuest)
-            return $this->render('resources'); 
-        
-        $village = Village::find()
-            ->where([Village::FIELD_USER_ID => \Yii::$app->getUser()->getId()])
-            ->one();
-
         return $this->render(
             'resources', 
-            [
-                'village' => $village,
-                'resources' => $village->getResourceSet(),
-            ]
         );
     }
 
