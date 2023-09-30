@@ -8,6 +8,11 @@ return [
             'username' => 'postgres',
             'password' => '',
             'charset' => 'utf8',
+            'enableQueryCache' => true,
+            'queryCacheDuration' => 5,
+            'enableSchemaCache' => true,
+            'schemaCacheDuration' => 30,
+            'schemaCache' => 'cache',
         ],
         'mailer' => [
             'class' => \yii\symfonymailer\Mailer::class,

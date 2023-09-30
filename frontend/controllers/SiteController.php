@@ -18,6 +18,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\helpers\Url;
 
 /**
  * Site controller
@@ -63,6 +64,20 @@ class SiteController extends Controller
                 ],
             ],
         ];
+    }
+
+    private const NOT_LOGGED_IN_ACTIONS = [
+        self::ACTION_LOGIN,
+        self::ACTION_REGISTER
+    ];
+    public function beforeAction($action)
+    {
+        if (\Yii::$app->getUser()->isGuest && ! in_array($action->id, self::NOT_LOGGED_IN_ACTIONS)) {
+            Yii::$app->response->redirect(Url::to([self::ACTION_LOGIN]), 301);
+            Yii::$app->end();
+        }
+
+        return parent::beforeAction($action);
     }
 
     /**
