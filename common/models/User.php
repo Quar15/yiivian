@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use console\controllers\VillageController;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -57,6 +58,16 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
         ];
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            // @TODO: Create basic village
+            // $villageController = new VillageController();
+            // $villageController->actionCreateBasicVillage($this->id);
+        }
+        return parent::afterSave($insert, $changedAttributes);
     }
 
     /**
