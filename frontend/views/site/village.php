@@ -12,7 +12,7 @@ $this->title = 'Village';
 ?>
 
 <div class="main-panel">
-    <?= VillageLayoutWidget::widget([VillageLayoutWidget::VILLAGE_BUILDINGS_LIST => $currVillage->getVillageBuildings()]) ?>
+<?= VillageLayoutWidget::widget([VillageLayoutWidget::VILLAGE_BUILDINGS_LIST => $currVillage->getVillageBuildings()]) ?>
 </div>
 <div class="build-queue">
     <h3>Building:</h3>

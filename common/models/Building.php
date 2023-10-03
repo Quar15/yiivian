@@ -23,6 +23,7 @@ class Building extends \yii\db\ActiveRecord
 {
 
     public const FIELD_SLOT_TYPE = 'slot_type';
+    public const FIELD_SLOT = 'slot';
 
     public const SLOT_TYPE_UTILITY = 0;
     public const SLOT_TYPE_VILLAGE = 1;
@@ -89,6 +90,17 @@ class Building extends \yii\db\ActiveRecord
             ->hasOne(BuildingTypeInfo::class, ['id' => 'building_type_info_id'])
             ->cache()
             ->one();
+    }
+
+    public static function create(int $buildingTypeId, int $resourceType, int $slotType, int $level, int $buildingTypeInfoId)
+    {
+        $building = new Building();
+        $building->building_type_id = $buildingTypeId;
+        $building->resource_type = $resourceType;
+        $building->slot_type = $slotType;
+        $building->level = $level;
+        $building->building_type_info_id = $buildingTypeInfoId;
+        return $building;
     }
 }
 

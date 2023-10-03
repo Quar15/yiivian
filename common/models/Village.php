@@ -82,7 +82,8 @@ class Village extends \yii\db\ActiveRecord
                         Building::SLOT_TYPE_UTILITY
                     ]
                 ]
-            )->all();
+            )->orderBy(Building::FIELD_SLOT)
+            ->all();
     }
 
     public function getVillageBuildings()
@@ -95,7 +96,8 @@ class Village extends \yii\db\ActiveRecord
                         Building::SLOT_TYPE_UTILITY
                     ]
                 ]
-            )->all();
+            )->orderBy(Building::FIELD_SLOT)
+            ->all();
     }
 
     /**
@@ -141,6 +143,97 @@ class Village extends \yii\db\ActiveRecord
             $this->initResourceSet();
         }
         return $this->resources;
+    }
+
+    public function create(int $userId, string $villageName, array $buildings, array $villageResources): bool
+    {
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            $this->name = $villageName;
+            $this->user_id = $userId;
+            $this->save();
+
+            foreach($buildings as $building) {
+                $building->village_id = $this->id;
+                $building->save();
+            }
+
+            foreach($villageResources as $villageResource) {
+                $villageResource->village_id =$this->id;
+                $villageResource->save();    
+            }
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            return false;
+        }
+
+        return true;
+    }
+
+    public function createDefault($userId)
+    {
+        $user = User::findOne($userId);
+        if (! $user) { return false; }
+        $username = $user->username;
+        $defaultVillageName = "$username's Village";
+        
+        $buildings = [];
+
+        $woodcutter = Building::create(1, 1, 2, 0, 1);
+        $woodcutterSlots = [1, 3, 15, 18];
+        foreach($woodcutterSlots as $slot) {
+            $woodcutter->slot = $slot;
+            $buildings[] = clone $woodcutter;    
+        }
+
+        $clayPit = Building::create(4, 2, 2, 0, 2);
+        $clayPitSlots = [5, 6, 17, 19];
+        foreach($clayPitSlots as $slot) {
+            $clayPit->slot = $slot;
+            $buildings[] = clone $clayPit;    
+        }
+
+        $ironMine = Building::create(7, 3, 2, 0, 3);
+        $ironMineSlots = [4, 7, 11, 12];
+        foreach($ironMineSlots as $slot) {
+            $ironMine->slot = $slot;
+            $buildings[] = clone $ironMine;    
+        }
+
+        $crop = Building::create(10, 4, 2, 0, 4);
+        $cropSlots = [2, 8, 9, 13, 14, 16];
+        foreach($cropSlots as $slot) {
+            $crop->slot = $slot;
+            $buildings[] = clone $crop;    
+        }
+
+        $emptyBuilding = Building::create(0, 0, 1, 0, 0);
+        $emptyBuildingsSlots = [
+            1, 2, 3, 
+            4, 5, 6, 7, 
+            8, 9, 11, 12, 
+            13, 14, 15, 16, 
+            17, 18, 19
+        ];
+        foreach($emptyBuildingsSlots as $slot) {
+            $emptyBuilding->slot = $slot;
+            $buildings[] = clone $emptyBuilding;
+        }
+
+        $middleBuilding = Building::create(0, -1, 1, 0, 0);
+        $middleBuilding->slot = 10;
+        $buildings[] = clone $middleBuilding;
+        $middleBuilding->slot_type = 2;
+        $buildings[] = clone $middleBuilding;
+
+        $woodResource = VillageResource::create(1, 100, 500, 5);
+        $clayResource = VillageResource::create(2, 100, 500, 5);
+        $ironResource = VillageResource::create(3, 100, 500, 5);
+        $wheatResource = VillageResource::create(4, 100, 500, 5);
+        $villageResources = [$woodResource, $clayResource, $ironResource, $wheatResource];
+
+        return $this->create($userId, $defaultVillageName, $buildings, $villageResources);
     }
 }
 

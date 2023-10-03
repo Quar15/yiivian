@@ -63,9 +63,8 @@ class User extends ActiveRecord implements IdentityInterface
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
-            // @TODO: Create basic village
-            // $villageController = new VillageController();
-            // $villageController->actionCreateBasicVillage($this->id);
+            $village = new Village();
+            $village->createDefault($this->id);
         }
         return parent::afterSave($insert, $changedAttributes);
     }

@@ -85,5 +85,15 @@ class VillageResource extends \yii\db\ActiveRecord
 
         return $resourceNames[$this->resource_type];
     }
+
+    public static function create(int $resourceType, int $value, int $maxValue, int $generationPerHour): VillageResource 
+    {
+        $resource = new VillageResource();
+        $resource->resource_type = $resourceType;
+        $resource->value = $value;
+        $resource->max_value = $maxValue;
+        $resource->generation_per_hour = $generationPerHour;
+        return $resource;
+    }
 }
 
