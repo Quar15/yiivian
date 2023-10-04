@@ -71,7 +71,10 @@ class Building extends \yii\db\ActiveRecord
      */
     public function getBuildingType()
     {
-        return $this->hasOne(BuildingType::class, ['id' => 'building_type_id']);
+        return $this
+            ->hasOne(BuildingType::class, ['id' => 'building_type_id'])
+            ->cache()
+            ->one();
     }
 
     /**
@@ -90,6 +93,22 @@ class Building extends \yii\db\ActiveRecord
             ->hasOne(BuildingTypeInfo::class, ['id' => 'building_type_info_id'])
             ->cache()
             ->one();
+    }
+
+    public function upgrade(): bool
+    {
+        $nextLevelBuildingTypeId = $this->getBuildingType()->next_level_building_type_id;
+        if (! $nextLevelBuildingTypeId) {
+            return false;
+        }
+
+        $nextLevelBuildingType = BuildingType::findOne($nextLevelBuildingTypeId);
+
+        $this->building_type_id = $nextLevelBuildingType->id;
+        $this->building_type_info_id = $nextLevelBuildingType->building_type_info_id;
+        $this->level = $nextLevelBuildingType->level;
+
+        return $this->save();
     }
 
     public static function create(int $buildingTypeId, int $resourceType, int $slotType, int $level, int $buildingTypeInfoId)
