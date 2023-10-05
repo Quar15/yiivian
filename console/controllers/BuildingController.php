@@ -3,7 +3,7 @@
 namespace console\controllers;
 
 use common\models\Building;
-use Yii\base\Controller;
+use Yii\console\Controller;
 use yii\helpers\Console;
 
 class BuildingController extends Controller

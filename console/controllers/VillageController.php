@@ -3,7 +3,7 @@
 namespace console\controllers;
 
 use common\models\Village;
-use Yii\base\Controller;
+use Yii\console\Controller;
 
 class VillageController extends Controller
 {
