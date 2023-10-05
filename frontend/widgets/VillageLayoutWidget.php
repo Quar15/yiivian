@@ -28,7 +28,7 @@ class VillageLayoutWidget extends Widget
             for ($j = 0; $j < $slotsInRow; $j++) {
                 $elements .= $this->createSlot(
                     $this->villageBuildingsList[$i]['slot'], 
-                    $this->villageBuildingsList[$i]->getBuildingTypeInfo()->name,
+                    $this->villageBuildingsList[$i]->getOneBuildingTypeInfo()->name,
                     $this->villageBuildingsList[$i]['resource_type'], 
                     $this->villageBuildingsList[$i]['level']
                 );

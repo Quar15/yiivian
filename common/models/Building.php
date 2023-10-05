@@ -98,7 +98,7 @@ class Building extends \yii\db\ActiveRecord
 
     public function getOneBuildingTypeInfo()
     {
-        $this->getBuildingTypeInfo()
+        return $this->getBuildingTypeInfo()
             ->cache()
             ->one();
     }
