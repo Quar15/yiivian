@@ -71,8 +71,12 @@ class Building extends \yii\db\ActiveRecord
      */
     public function getBuildingType()
     {
-        return $this
-            ->hasOne(BuildingType::class, ['id' => 'building_type_id'])
+        return $this->hasOne(BuildingType::class, ['id' => 'building_type_id']);
+    }
+
+    public function getOneBuildingType()
+    {
+        return $this->getBuildingType()
             ->cache()
             ->one();
     }
@@ -89,15 +93,19 @@ class Building extends \yii\db\ActiveRecord
 
     public function getBuildingTypeInfo()
     {
-        return $this
-            ->hasOne(BuildingTypeInfo::class, ['id' => 'building_type_info_id'])
+        return $this->hasOne(BuildingTypeInfo::class, ['id' => 'building_type_info_id']);
+    }
+
+    public function getOneBuildingTypeInfo()
+    {
+        $this->getBuildingTypeInfo()
             ->cache()
             ->one();
     }
 
     public function upgrade(): bool
     {
-        $nextLevelBuildingTypeId = $this->getBuildingType()->next_level_building_type_id;
+        $nextLevelBuildingTypeId = $this->getOneBuildingType()->next_level_building_type_id;
         if (! $nextLevelBuildingTypeId) {
             return false;
         }
