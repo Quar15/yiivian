@@ -187,21 +187,21 @@ class Village extends \yii\db\ActiveRecord
             $buildings[] = clone $woodcutter;    
         }
 
-        $clayPit = Building::create(4, 2, 2, 0, 2);
+        $clayPit = Building::create(12, 2, 2, 0, 2);
         $clayPitSlots = [5, 6, 17, 19];
         foreach($clayPitSlots as $slot) {
             $clayPit->slot = $slot;
             $buildings[] = clone $clayPit;    
         }
 
-        $ironMine = Building::create(7, 3, 2, 0, 3);
+        $ironMine = Building::create(23, 3, 2, 0, 3);
         $ironMineSlots = [4, 7, 11, 12];
         foreach($ironMineSlots as $slot) {
             $ironMine->slot = $slot;
             $buildings[] = clone $ironMine;    
         }
 
-        $crop = Building::create(10, 4, 2, 0, 4);
+        $crop = Building::create(34, 4, 2, 0, 4);
         $cropSlots = [2, 8, 9, 13, 14, 16];
         foreach($cropSlots as $slot) {
             $crop->slot = $slot;
