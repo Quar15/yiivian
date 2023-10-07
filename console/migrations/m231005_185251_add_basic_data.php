@@ -7,7 +7,8 @@ use yii\db\Migration;
  */
 class m231005_185251_add_basic_data extends Migration
 {
-    
+    private const BUILDING_TABLE_NAME = 'building';
+
     private const BUILDING_TYPE_TABLE_NAME = 'building_type';
     private const BUILDING_TYPE_TABLE_FIELD_ID = 'id';
     private const BUILDING_TYPE_TABLE_FIELD_BUILDING_TYPE_INFO_ID = 'building_type_info_id';
@@ -70,52 +71,52 @@ class m231005_185251_add_basic_data extends Migration
                 // Utility - empty building
                 [0, 0, '', '', null, null, 0, 0, -1, 0],
                 // Woodcutter
-                [1, 1, 'building/demolish', 'building/upgrade', null, null, 0, 0, 2, 1],
-                [2, 1, 'building/demolish', 'building/upgrade', 1, null, 1, 260, 2, 1],
-                [3, 1, 'building/demolish', 'building/upgrade', 2, null, 2, 620, 2, 1],
-                [4, 1, 'building/demolish', 'building/upgrade', 3, null, 3, 1190, 2, 1],
-                [5, 1, 'building/demolish', 'building/upgrade', 4, null, 4, 2100, 2, 1],
-                [6, 1, 'building/demolish', 'building/upgrade', 5, null, 5, 3560, 2, 1],
-                [7, 1, 'building/demolish', 'building/upgrade', 6, null, 6, 5890, 2, 1],
-                [8, 1, 'building/demolish', 'building/upgrade', 7, null, 7, 9620, 2, 1],
-                [9, 1, 'building/demolish', 'building/upgrade', 8, null, 8, 15590, 2, 1],
-                [10, 1, 'building/demolish', 'building/upgrade', 9, null, 9, 25150, 2, 1],
+                [1, 1, 'building/demolish', 'building/upgrade', null, 2, 0, 0, 2, 1],
+                [2, 1, 'building/demolish', 'building/upgrade', 1, 3, 1, 260, 2, 1],
+                [3, 1, 'building/demolish', 'building/upgrade', 2, 4, 2, 620, 2, 1],
+                [4, 1, 'building/demolish', 'building/upgrade', 3, 5, 3, 1190, 2, 1],
+                [5, 1, 'building/demolish', 'building/upgrade', 4, 6, 4, 2100, 2, 1],
+                [6, 1, 'building/demolish', 'building/upgrade', 5, 7, 5, 3560, 2, 1],
+                [7, 1, 'building/demolish', 'building/upgrade', 6, 8, 6, 5890, 2, 1],
+                [8, 1, 'building/demolish', 'building/upgrade', 7, 9, 7, 9620, 2, 1],
+                [9, 1, 'building/demolish', 'building/upgrade', 8, 10, 8, 15590, 2, 1],
+                [10, 1, 'building/demolish', 'building/upgrade', 9, 11, 9, 25150, 2, 1],
                 [11, 1, 'building/demolish', 'building/upgrade', 10, null, 10, 40440, 2, 1],
                 // Clay pit
-                [12, 2, 'building/demolish', 'building/upgrade', null, null, 0, 0, 2, 2],
-                [13, 2, 'building/demolish', 'building/upgrade', 12, null, 1, 220, 2, 2],
-                [14, 2, 'building/demolish', 'building/upgrade', 13, null, 2, 550, 2, 2],
-                [15, 2, 'building/demolish', 'building/upgrade', 14, null, 3, 1080, 2, 2],
-                [16, 2, 'building/demolish', 'building/upgrade', 15, null, 4, 1930, 2, 2],
-                [17, 2, 'building/demolish', 'building/upgrade', 16, null, 5, 3290, 2, 2],
-                [18, 2, 'building/demolish', 'building/upgrade', 17, null, 6, 5470, 2, 2],
-                [19, 2, 'building/demolish', 'building/upgrade', 18, null, 7, 8950, 2, 2],
-                [20, 2, 'building/demolish', 'building/upgrade', 19, null, 8, 14520, 2, 2],
-                [21, 2, 'building/demolish', 'building/upgrade', 20, null, 9, 23430, 2, 2],
+                [12, 2, 'building/demolish', 'building/upgrade', null, 13, 0, 0, 2, 2],
+                [13, 2, 'building/demolish', 'building/upgrade', 12, 14, 1, 220, 2, 2],
+                [14, 2, 'building/demolish', 'building/upgrade', 13, 15, 2, 550, 2, 2],
+                [15, 2, 'building/demolish', 'building/upgrade', 14, 16, 3, 1080, 2, 2],
+                [16, 2, 'building/demolish', 'building/upgrade', 15, 17, 4, 1930, 2, 2],
+                [17, 2, 'building/demolish', 'building/upgrade', 16, 18, 5, 3290, 2, 2],
+                [18, 2, 'building/demolish', 'building/upgrade', 17, 19, 6, 5470, 2, 2],
+                [19, 2, 'building/demolish', 'building/upgrade', 18, 20, 7, 8950, 2, 2],
+                [20, 2, 'building/demolish', 'building/upgrade', 19, 21, 8, 14520, 2, 2],
+                [21, 2, 'building/demolish', 'building/upgrade', 20, 22, 9, 23430, 2, 2],
                 [22, 2, 'building/demolish', 'building/upgrade', 21, null, 10, 37690, 2, 2],
                 // Iron mine
-                [23, 3, 'building/demolish', 'building/upgrade', null, null, 0, 0, 2, 3],
-                [24, 3, 'building/demolish', 'building/upgrade', 23, null, 1, 450, 2, 3],
-                [25, 3, 'building/demolish', 'building/upgrade', 24, null, 2, 920, 2, 3],
-                [26, 3, 'building/demolish', 'building/upgrade', 25, null, 3, 1670, 2, 3],
-                [27, 3, 'building/demolish', 'building/upgrade', 26, null, 4, 2880, 2, 3],
-                [28, 3, 'building/demolish', 'building/upgrade', 27, null, 5, 4800, 2, 3],
-                [29, 3, 'building/demolish', 'building/upgrade', 28, null, 6, 7880, 2, 3],
-                [30, 3, 'building/demolish', 'building/upgrade', 29, null, 7, 12810, 2, 3],
-                [31, 3, 'building/demolish', 'building/upgrade', 30, null, 8, 20690, 2, 3],
-                [32, 3, 'building/demolish', 'building/upgrade', 31, null, 9, 33310, 2, 3],
+                [23, 3, 'building/demolish', 'building/upgrade', null, 24, 0, 0, 2, 3],
+                [24, 3, 'building/demolish', 'building/upgrade', 23, 25, 1, 450, 2, 3],
+                [25, 3, 'building/demolish', 'building/upgrade', 24, 26, 2, 920, 2, 3],
+                [26, 3, 'building/demolish', 'building/upgrade', 25, 27, 3, 1670, 2, 3],
+                [27, 3, 'building/demolish', 'building/upgrade', 26, 28, 4, 2880, 2, 3],
+                [28, 3, 'building/demolish', 'building/upgrade', 27, 29, 5, 4800, 2, 3],
+                [29, 3, 'building/demolish', 'building/upgrade', 28, 30, 6, 7880, 2, 3],
+                [30, 3, 'building/demolish', 'building/upgrade', 29, 31, 7, 12810, 2, 3],
+                [31, 3, 'building/demolish', 'building/upgrade', 30, 32, 8, 20690, 2, 3],
+                [32, 3, 'building/demolish', 'building/upgrade', 31, 33, 9, 33310, 2, 3],
                 [33, 3, 'building/demolish', 'building/upgrade', 32, null, 10, 53500, 2, 3],
                 // Wheat crop
-                [34, 4, 'building/demolish', 'building/upgrade', null, null, 0, 0, 2, 4],
-                [35, 4, 'building/demolish', 'building/upgrade', 34, null, 1, 150, 2, 4],
-                [36, 4, 'building/demolish', 'building/upgrade', 35, null, 2, 440, 2, 4],
-                [37, 4, 'building/demolish', 'building/upgrade', 36, null, 3, 900, 2, 4],
-                [38, 4, 'building/demolish', 'building/upgrade', 37, null, 4, 1650, 2, 4],
-                [39, 4, 'building/demolish', 'building/upgrade', 38, null, 5, 2830, 2, 4],
-                [40, 4, 'building/demolish', 'building/upgrade', 39, null, 6, 4730, 2, 4],
-                [41, 4, 'building/demolish', 'building/upgrade', 40, null, 7, 7780, 2, 4],
-                [42, 4, 'building/demolish', 'building/upgrade', 41, null, 8, 12640, 2, 4],
-                [43, 4, 'building/demolish', 'building/upgrade', 42, null, 9, 20430, 2, 4],
+                [34, 4, 'building/demolish', 'building/upgrade', null, 35, 0, 0, 2, 4],
+                [35, 4, 'building/demolish', 'building/upgrade', 34, 36, 1, 150, 2, 4],
+                [36, 4, 'building/demolish', 'building/upgrade', 35, 37, 2, 440, 2, 4],
+                [37, 4, 'building/demolish', 'building/upgrade', 36, 38, 3, 900, 2, 4],
+                [38, 4, 'building/demolish', 'building/upgrade', 37, 39, 4, 1650, 2, 4],
+                [39, 4, 'building/demolish', 'building/upgrade', 38, 40, 5, 2830, 2, 4],
+                [40, 4, 'building/demolish', 'building/upgrade', 39, 41, 6, 4730, 2, 4],
+                [41, 4, 'building/demolish', 'building/upgrade', 40, 42, 7, 7780, 2, 4],
+                [42, 4, 'building/demolish', 'building/upgrade', 41, 43, 8, 12640, 2, 4],
+                [43, 4, 'building/demolish', 'building/upgrade', 42, 44, 9, 20430, 2, 4],
                 [44, 4, 'building/demolish', 'building/upgrade', 43, null, 10, 32880, 2, 4],
             ]
         );
@@ -175,6 +176,7 @@ class m231005_185251_add_basic_data extends Migration
                 [44, 1, 7070], [44, 2, 9095], [44, 3, 7070], [44, 4, 2020],
             ]
         );
+        return true;
     }
 
     /**
@@ -182,6 +184,14 @@ class m231005_185251_add_basic_data extends Migration
      */
     public function safeDown()
     {
-        return false;
+        $this->truncateTable(self::BUILDING_COST_TABLE_NAME);
+        $this->db->createCommand("TRUNCATE TABLE " . self::BUILDING_TYPE_TABLE_NAME . " CASCADE")->execute();
+        $this->db->createCommand("TRUNCATE TABLE " . self::BUILDING_TYPE_INFO_TABLE_NAME . " CASCADE")->execute();
+
+        $this->db->createCommand("SELECT setval(pg_get_serial_sequence('" . self::BUILDING_TABLE_NAME . "', 'id'), coalesce(MAX(id), 1)) FROM " . self::BUILDING_TABLE_NAME)->execute();
+        $this->db->createCommand("SELECT setval(pg_get_serial_sequence('" . self::BUILDING_TYPE_TABLE_NAME . "', 'id'), coalesce(MAX(id), 1)) FROM " . self::BUILDING_TYPE_TABLE_NAME)->execute();
+        $this->db->createCommand("SELECT setval(pg_get_serial_sequence('" . self::BUILDING_TYPE_INFO_TABLE_NAME . "', 'id'), coalesce(MAX(id), 1)) FROM " . self::BUILDING_TYPE_INFO_TABLE_NAME)->execute();
+
+        return true;
     }
 }
