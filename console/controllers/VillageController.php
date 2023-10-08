@@ -7,13 +7,13 @@ use yii\console\Controller;
 
 class VillageController extends Controller
 {
-    public function actionCreateAndSaveVillage(int $userId, string $villageName, array $buildings, array $villageResources)
+    public function actionCreateAndSave(int $userId, string $villageName, array $buildings, array $villageResources)
     {
         $village = new Village();
         return $village->create($userId, $villageName, $buildings, $villageResources);
     }
     
-    public function actionCreateDefaultVillage(int $userId): bool
+    public function actionCreateDefault(int $userId): bool
     {
         $village = new Village();
         return $village->createDefault($userId);

@@ -8,7 +8,7 @@ use yii\helpers\Console;
 
 class BuildingController extends Controller
 {
-    public function actionUpgradeBuilding(int $buildingId)
+    public function actionUpgrade(int $buildingId)
     {
         $building = Building::findOne($buildingId);
         if(! $building) {
