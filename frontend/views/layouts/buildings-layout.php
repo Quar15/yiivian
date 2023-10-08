@@ -42,7 +42,12 @@ $currVillageResourceSet = $resourceSets[array_key_first($resourceSets)];
         </div>
         <?= ResourceStatusWidget::widget(['resourceSet' => $currVillageResourceSet]) ?>
     </nav>
-
+    <?php
+        foreach(Yii::$app->session->getAllFlashes() as $key => $message) {
+            echo '<div class="flash-' . $key . '">' . $message . "</div>\n";
+        }
+    ?>
+ 
     <div class="wrapper">
         <?= $content ?> 
     </div>

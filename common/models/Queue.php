@@ -1,0 +1,108 @@
+<?php
+
+namespace common\models;
+
+use Yii;
+use yii\db\ActiveRecord;
+
+/**
+ * This is the model class for table "queue".
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int $queue_type
+ * @property string $execution_timestamp
+ * @property string $command
+ * @property bool $is_processed
+ *
+ * @property User $user
+ */
+class Queue extends ActiveRecord
+{
+    public const FIELD_ID = 'id';
+    public const FIELD_USER_ID = 'user_id';
+    public const FIELD_QUEUE_TYPE = 'queue_type';
+    public const FIELD_EXECUTION_TIMESTAMP = 'execution_timestamp';
+    public const FIELD_COMMAND = 'command';
+    public const FIELD_IS_PROCESSED = 'is_processed';
+
+    public const QUEUE_TYPE_BUILDING = 1;
+    public const QUEUE_TYPE_UNIT = 2;
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return 'queue';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['user_id', 'command'], 'required'],
+            [['user_id'], 'default', 'value' => null],
+            [['user_id', 'queue_type'], 'integer'],
+            [['execution_timestamp'], 'safe'],
+            [['is_processed'], 'boolean'],
+            [['command'], 'string', 'max' => 255],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'user_id' => 'User ID',
+            'execution_timestamp' => 'Execution Timestamp',
+            'command' => 'Command',
+            'is_processed' => 'Is Processed',
+        ];
+    }
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public static function getUserEntries(int $userId)
+    {
+        return Queue::find()
+            ->where([self::FIELD_USER_ID => $userId]);
+    }
+
+    public static function getWaitingUserEntries(int $userId)
+    {
+        return Queue::getUserEntries($userId)
+            ->where([self::FIELD_IS_PROCESSED => false]);
+    }
+
+    public static function getWaitingUserEntriesOfType(int $userId, int $queueType)
+    {
+        return Queue::getWaitingUserEntries($userId)
+            ->where([self::FIELD_QUEUE_TYPE => $queueType]);
+    }
+
+    public static function create(int $userId, int $queueType, $executionTimestamp, string $command): Queue
+    {
+        $queue = new Queue();
+        $queue->user_id = $userId;
+        $queue->queue_type = $queueType;
+        $queue->execution_timestamp = $executionTimestamp;
+        $queue->command = $command;
+        return $queue;
+    }
+}
+

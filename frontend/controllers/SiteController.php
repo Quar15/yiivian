@@ -2,9 +2,6 @@
 
 namespace frontend\controllers;
 
-use common\models\Village;
-use common\models\VillageResource;
-use common\models\VillageResourceSet;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;

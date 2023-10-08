@@ -103,6 +103,12 @@ class Building extends \yii\db\ActiveRecord
             ->one();
     }
 
+    public function getOneNextLevelBuildingType()
+    {
+        $nextLevelBuildingTypeId = $this->getOneBuildingType()->next_level_building_type_id;
+        return BuildingType::findOne($nextLevelBuildingTypeId);
+    }
+
     public function upgrade(): bool
     {
         $nextLevelBuildingTypeId = $this->getOneBuildingType()->next_level_building_type_id;

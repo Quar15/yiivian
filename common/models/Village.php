@@ -122,6 +122,19 @@ class Village extends \yii\db\ActiveRecord
             ->cache(5);
     }
 
+    public function getAllBuildingsIds()
+    {
+        $buildings = $this->getBuildings()
+            ->select('id')
+            ->cache()
+            ->all();
+        $ids = [];
+        foreach ($buildings as $building) {
+            $ids[] = $building->id;
+        }
+        return $ids;
+    }
+
     public function initResourceSet()
     {
         $villageResources = $this->getVillageResources()->all();
