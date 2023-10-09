@@ -22,6 +22,7 @@ class QueueController extends Controller
     private const ROUTE_BASE = '/' . self::CONTROLLER_ID . '/';
     
     private const ACTION_UPGRADE_BUILDING = 'upgrade-building';
+    private const ACTION_CANCEL_UPGRADE_BUILDING = 'cancel-upgrade-building';
 
     private const QUEUE_LIMIT_PER_USER = 3;
     
@@ -66,6 +67,8 @@ class QueueController extends Controller
         }
 
         $nextLevelBuildingType = Building::findOne($buildingId)->getOneNextLevelBuildingType();
+        
+        // @TODO: Check and subtract resources from village
 
         $queueModel = Queue::create(
             $userId, 
@@ -80,5 +83,38 @@ class QueueController extends Controller
         }
 
         return var_dump(Yii::$app->request->post());
+        // @TODO: Return html responses for HTMX
+    }
+
+    public const ROUTE_CANCEL_UPGRADE_BUILDING = self::ROUTE_BASE . self::ACTION_CANCEL_UPGRADE_BUILDING;
+    public function actionCancelUpgradeBuilding()
+    {
+        if(! isset($_POST['queue_entry_id'])) {
+            Yii::$app->session->setFlash('error', "Queue entry ID not provided");
+            return $this->redirect(Url::previous());
+        }
+
+        $queueEntryId = $_POST['queue_entry_id'];
+        $queueEntry = Queue::findOne($queueEntryId);
+
+        if(! $queueEntry) {
+            Yii::$app->session->setFlash('error', "Queue entry does not exists");
+            return $this->redirect(Url::previous());
+        }
+
+        if(Yii::$app->user->id != $queueEntry->user_id) {
+            Yii::$app->session->setFlash('error', "This user is not authorized to do this");
+            return $this->redirect(Url::previous());
+        }
+        
+        if(! $queueEntry->delete()) {
+            Yii::$app->session->setFlash('error', "Something went wrong");
+            return $this->redirect(Url::previous());
+        }
+
+        // @TODO: Return resources (90%)
+
+        return var_dump(Yii::$app->request->post());
+        // @TODO: Return html responses for HTMX
     }
 }
