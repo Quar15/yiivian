@@ -1,8 +1,8 @@
 <?php
 
-use common\models\VillageResource;
 use frontend\widgets\ResourceProductionStatusWidget;
 use frontend\widgets\ResourceLayoutWidget;
+use frontend\widgets\BuildQueueWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -23,38 +23,12 @@ $this->title = 'Resources';
         </div>
     </div>
 </div>
-<div class="build-queue">
-    <h3>Building:</h3>
-    <div class="build-queue-list">
-        <div class="build-queue-element">
-            <a href="#">X</a>
-            <p>Building Name (Level XX)</p>
-            <p>00:00:00</p>
-            <p>Done at 00:00</p>
-        </div>
-        <div class="build-queue-element">
-            <a href="#">X</a>
-            <p>Very very long building name that will not fit (Level XX)</p>
-            <p>00:00:00</p>
-            <p>Done at 00:00</p>
-        </div>
-        <div class="build-queue-element">
-            <a href="#">X</a>
-            <p>Building Name (Level XX)</p>
-            <p>00:00:00</p>
-            <p>Done at 00:00</p>
-        </div>
-        <div class="build-queue-element">
-            <a href="#">X</a>
-            <p>Building Name (Level XX)</p>
-            <p>00:00:00</p>
-            <p>Done at 00:00</p>
-        </div>
-        <div class="build-queue-element">
-            <a href="#">X</a>
-            <p>Building Name (Level XX)</p>
-            <p>00:00:00</p>
-            <p>Done at 00:00</p>
-        </div>
-    </div>
-</div>
+<form action="<?= Url::to('queue/upgrade-building') ?>" method="POST">
+    <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->getCsrfToken()); ?>
+    <input type="number" name="building_id"/>
+</form>
+<form action="<?= Url::to('queue/cancel-upgrade-building') ?>" method="POST">
+    <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->getCsrfToken()); ?>
+    <input type="number" name="queue_entry_id"/>
+</form>
+<?= BuildQueueWidget::widget([BuildQueueWidget::VILLAGE_QUEUE_BUILDINGS_LIST => $villageQueueBuildingsList]);  ?>

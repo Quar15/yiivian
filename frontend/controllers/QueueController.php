@@ -50,18 +50,25 @@ class QueueController extends Controller
         $buildingId = $_POST['building_id'];
 
         $userVillages = Yii::$app->user->identity->villages;
-        $userBuildingsIds = [];
+        $villageId = -1;
         foreach ($userVillages as $village) {
-            $userBuildingsIds = array_merge($userBuildingsIds, $village->getAllBuildingsIds());
+            $villageBuildingsIds = $village->getAllBuildingsIds();
+            if (in_array($buildingId, $villageBuildingsIds)) {
+                $villageId = $village->id;
+                break;
+            }
         }
 
-        if(! in_array($buildingId, $userBuildingsIds)) {
+        if($villageId < 0) {
             Yii::$app->session->setFlash('error', "Building ID is not owned by this account");
             return $this->redirect(Url::previous());
         }
 
         $userId = Yii::$app->user->identity->id;
-        if(Queue::getWaitingUserEntriesOfType($userId, Queue::QUEUE_TYPE_BUILDING)->count() >= self::QUEUE_LIMIT_PER_USER) {
+        $villageQueueEntriesCount = Queue::getWaitingUserEntriesOfType($userId, Queue::QUEUE_TYPE_BUILDING)
+            ->andWhere([Queue::FIELD_VILLAGE_ID => $villageId])
+            ->count();
+        if($villageQueueEntriesCount >= self::QUEUE_LIMIT_PER_USER) {
             Yii::$app->session->setFlash('error', "Queue is already full");
             return $this->redirect(Url::previous());
         }
@@ -70,8 +77,24 @@ class QueueController extends Controller
         
         // @TODO: Check and subtract resources from village
 
+        $duplicate = Queue::find()
+            ->andWhere([Queue::FIELD_USER_ID => $userId])
+            ->andWhere([Queue::FIELD_VILLAGE_ID => $villageId])
+            ->andWhere([Queue::FIELD_PRODUCT_ID => $buildingId])
+            ->andWhere([Queue::FIELD_QUEUE_TYPE => Queue::QUEUE_TYPE_BUILDING])
+            ->andWhere([Queue::FIELD_IS_PROCESSED => false])
+            ->limit(1)
+            ->one();
+
+        if ($duplicate) {
+            Yii::$app->session->setFlash('error', "Already upgrading the building");
+            return $this->redirect(Url::previous());
+        }
+
         $queueModel = Queue::create(
             $userId, 
+            $villageId,
+            $buildingId,
             Queue::QUEUE_TYPE_BUILDING,
             new Expression("NOW() + INTERVAL '" . $nextLevelBuildingType->build_time . " SECONDS'"),
             $nextLevelBuildingType->finish_build_action . ' ' . $buildingId

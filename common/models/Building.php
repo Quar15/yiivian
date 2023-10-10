@@ -22,6 +22,7 @@ use Yii;
 class Building extends \yii\db\ActiveRecord
 {
 
+    public const FIELD_ID = 'id';
     public const FIELD_SLOT_TYPE = 'slot_type';
     public const FIELD_SLOT = 'slot';
 
@@ -93,7 +94,7 @@ class Building extends \yii\db\ActiveRecord
 
     public function getBuildingTypeInfo()
     {
-        return $this->hasOne(BuildingTypeInfo::class, ['id' => 'building_type_info_id']);
+        return $this->hasOne(BuildingTypeInfo::class, ['id' => 'building_type_info_id'])->cache(86400);
     }
 
     public function getOneBuildingTypeInfo()

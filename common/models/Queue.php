@@ -10,6 +10,8 @@ use yii\db\ActiveRecord;
  *
  * @property int $id
  * @property int $user_id
+ * @property int $village_id
+ * @property int $product_id
  * @property int $queue_type
  * @property string $execution_timestamp
  * @property string $command
@@ -21,6 +23,8 @@ class Queue extends ActiveRecord
 {
     public const FIELD_ID = 'id';
     public const FIELD_USER_ID = 'user_id';
+    public const FIELD_VILLAGE_ID = 'village_id';
+    public const FIELD_PRODUCT_ID = 'product_id';
     public const FIELD_QUEUE_TYPE = 'queue_type';
     public const FIELD_EXECUTION_TIMESTAMP = 'execution_timestamp';
     public const FIELD_COMMAND = 'command';
@@ -43,13 +47,14 @@ class Queue extends ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'command'], 'required'],
+            [['user_id', 'village_id', 'product_id', 'command'], 'required'],
             [['user_id'], 'default', 'value' => null],
-            [['user_id', 'queue_type'], 'integer'],
+            [['user_id', 'queue_type', 'village_id', 'product_id'], 'integer'],
             [['execution_timestamp'], 'safe'],
             [['is_processed'], 'boolean'],
             [['command'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['village_id'], 'exist', 'skipOnError' => true, 'targetClass' => Village::class, 'targetAttribute' => ['village_id' => 'id']],
         ];
     }
 
@@ -61,6 +66,8 @@ class Queue extends ActiveRecord
         return [
             'id' => 'ID',
             'user_id' => 'User ID',
+            'village_id' => 'Village ID',
+            'product_id' => 'Product ID',
             'execution_timestamp' => 'Execution Timestamp',
             'command' => 'Command',
             'is_processed' => 'Is Processed',
@@ -75,6 +82,11 @@ class Queue extends ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function getVillage()
+    {
+        return $this->hasOne(User::class, ['id' => 'village_id']);
     }
 
     public static function getUserEntries(int $userId)
@@ -95,10 +107,12 @@ class Queue extends ActiveRecord
             ->where([self::FIELD_QUEUE_TYPE => $queueType]);
     }
 
-    public static function create(int $userId, int $queueType, $executionTimestamp, string $command): Queue
+    public static function create(int $userId, int $villageId, int $productId, int $queueType, $executionTimestamp, string $command): Queue
     {
         $queue = new Queue();
         $queue->user_id = $userId;
+        $queue->village_id = $villageId;
+        $queue->product_id = $productId;
         $queue->queue_type = $queueType;
         $queue->execution_timestamp = $executionTimestamp;
         $queue->command = $command;

@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\Building;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -11,11 +12,13 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\models\Queue;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use yii\helpers\Url;
+use frontend\widgets\BuildQueueWidget;
 
 /**
  * Site controller
@@ -108,9 +111,34 @@ class SiteController extends Controller
     public function actionResources() 
     {
         $this->layout = 'buildings-layout';
+        $villages = \Yii::$app->user->identity->villages;
+        $currVillage = $villages[array_key_first($villages)];
+        $villageQueueEntriesList = Queue::getWaitingUserEntriesOfType(\Yii::$app->user->id, Queue::QUEUE_TYPE_BUILDING)
+            ->where([Queue::FIELD_VILLAGE_ID => $currVillage->id])
+            ->all();
+
+        $villageQueueBuildingsList = [];
+        foreach ($villageQueueEntriesList as $entry) {
+            $timestamp = strtotime($entry->execution_timestamp);
+            $building = Building::find()
+                ->andWhere([Building::FIELD_ID => $entry->product_id])
+                ->cache(max($timestamp - time(), 1))
+                ->limit(1)
+                ->one();
+
+            $villageQueueBuildingsList[] = [
+                'id' => $entry->id,
+                'building_name' => $building->getBuildingTypeInfo()->one()->name, 
+                'building_level' => $building->level + 1, 
+                'endTimestamp' => $timestamp,
+            ];
+        }
         
         return $this->render(
             'resources', 
+            [
+                BuildQueueWidget::VILLAGE_QUEUE_BUILDINGS_LIST => $villageQueueBuildingsList 
+            ]
         );
     }
 
