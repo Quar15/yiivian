@@ -4,6 +4,7 @@
 /** @var string $content */
 
 use frontend\assets\BuildingsAsset;
+use frontend\widgets\FlashMessagesWidget;
 use frontend\widgets\ResourceStatusWidget;
 use yii\bootstrap5\Html;
 use yii\helpers\Url;
@@ -42,12 +43,8 @@ $currVillageResourceSet = $resourceSets[array_key_first($resourceSets)];
         </div>
         <?= ResourceStatusWidget::widget(['resourceSet' => $currVillageResourceSet]) ?>
     </nav>
-    <?php
-        foreach(Yii::$app->session->getAllFlashes() as $key => $message) {
-            echo '<div class="flash-' . $key . '">' . $message . "</div>\n";
-        }
-    ?>
- 
+    <?= FlashMessagesWidget::widget() ?>
+    
     <div class="wrapper">
         <?= $content ?> 
     </div>

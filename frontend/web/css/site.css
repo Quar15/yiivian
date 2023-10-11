@@ -3,6 +3,10 @@
     --text-main-dark: #CCC;
     --text-hover: #1111a5;
     --background-main-dark: #111;
+    --error-flash-bg-color: #f5c6cb;
+    --error-flash-color: #721c24;
+    --info-flash-bg-color: #cce5ff;
+    --info-flash-color: #004085;
 }
 
 body {
@@ -11,6 +15,7 @@ body {
     background-color: var(--background-main);
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 h3 {
@@ -96,4 +101,47 @@ nav .resources-status .resource-status-element p{
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+}
+
+.flash-messages {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+}
+
+.flash-messages div {
+    position: relative;
+    right: -320px;
+    border-radius: 3px;
+    margin: 3px;
+    padding: 5px 10px;
+    width: 300px;
+    animation: flash-exit linear 3s;
+}
+
+.flash-messages .flash-error {
+    color: var(--error-flash-color);
+    background-color: var(--error-flash-bg-color);
+}
+
+.flash-messages .flash-info {
+    color: var(--info-flash-color);
+    background-color: var(--info-flash-bg-color);
+}
+
+@keyframes flash-exit {
+    0% {
+        right: 0px;
+    }
+
+    80% {
+        right: 0px;
+    }
+
+    100% {
+        right: -320px;
+    }
 }
