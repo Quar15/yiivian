@@ -119,6 +119,7 @@ class Village extends \yii\db\ActiveRecord
     {
         return $this
             ->hasMany(VillageResource::class, ['village_id' => 'id'])
+            ->orderBy(VillageResource::FIELD_RESOURCE_TYPE)
             ->cache(5);
     }
 

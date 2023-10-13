@@ -76,7 +76,10 @@ class BuildingType extends \yii\db\ActiveRecord
      */
     public function getBuildingCosts()
     {
-        return $this->hasMany(BuildingCost::class, ['building_type_id' => 'id']);
+        return $this
+            ->hasMany(BuildingCost::class, ['building_type_id' => 'id'])
+            ->orderBy(BuildingCost::FIELD_RESOURCE_TYPE)
+            ->cache(86400);
     }
 
     /**

@@ -15,6 +15,11 @@ use Yii;
  */
 class BuildingCost extends \yii\db\ActiveRecord
 {
+
+    public const FIELD_BUILDING_TYPE_ID = 'building_type_id';
+    public const FIELD_RESOURCE_TYPE = 'resource_type';
+    public const FIELD_VALUE = 'value';
+
     /**
      * {@inheritdoc}
      */

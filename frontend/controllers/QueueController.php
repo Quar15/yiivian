@@ -50,23 +50,23 @@ class QueueController extends Controller
         $buildingId = $_POST['building_id'];
 
         $userVillages = Yii::$app->user->identity->villages;
-        $villageId = -1;
+        $relatedVillage = null;
         foreach ($userVillages as $village) {
             $villageBuildingsIds = $village->getAllBuildingsIds();
             if (in_array($buildingId, $villageBuildingsIds)) {
-                $villageId = $village->id;
+                $relatedVillage = $village;
                 break;
             }
         }
 
-        if($villageId < 0) {
+        if(! $relatedVillage) {
             Yii::$app->session->setFlash('error', "Building ID is not owned by this account");
             return $this->redirect(Url::previous());
         }
 
         $userId = Yii::$app->user->identity->id;
         $villageQueueEntriesCount = Queue::getWaitingUserEntriesOfType($userId, Queue::QUEUE_TYPE_BUILDING)
-            ->andWhere([Queue::FIELD_VILLAGE_ID => $villageId])
+            ->andWhere([Queue::FIELD_VILLAGE_ID => $relatedVillage->id])
             ->count();
         if($villageQueueEntriesCount >= self::QUEUE_LIMIT_PER_USER) {
             Yii::$app->session->setFlash('error', "Queue is already full");
@@ -75,11 +75,24 @@ class QueueController extends Controller
 
         $nextLevelBuildingType = Building::findOne($buildingId)->getOneNextLevelBuildingType();
         
-        // @TODO: Check and subtract resources from village
+        $costs = $nextLevelBuildingType->getBuildingCosts()->all();
+        $villageResources = $relatedVillage->getVillageResources()->all();
+        for ($i=0; $i < count($costs); $i++) {
+            if ($costs[$i]->value > $villageResources[$i]->value){
+                Yii::$app->session->setFlash('error', "Not enough resources");
+                return $this->redirect(Url::previous());
+            }
+
+            $villageResources[$i]->value -= $costs[$i]->value;
+            if (! $villageResources[$i]->save()){
+                Yii::$app->session->setFlash('error', "Something wennt wrong");
+                return $this->redirect(Url::previous());
+            }
+        }
 
         $duplicate = Queue::find()
             ->andWhere([Queue::FIELD_USER_ID => $userId])
-            ->andWhere([Queue::FIELD_VILLAGE_ID => $villageId])
+            ->andWhere([Queue::FIELD_VILLAGE_ID => $relatedVillage->id])
             ->andWhere([Queue::FIELD_PRODUCT_ID => $buildingId])
             ->andWhere([Queue::FIELD_QUEUE_TYPE => Queue::QUEUE_TYPE_BUILDING])
             ->andWhere([Queue::FIELD_IS_PROCESSED => false])
@@ -93,7 +106,7 @@ class QueueController extends Controller
 
         $queueModel = Queue::create(
             $userId, 
-            $villageId,
+            $relatedVillage->id,
             $buildingId,
             Queue::QUEUE_TYPE_BUILDING,
             new Expression("NOW() + INTERVAL '" . $nextLevelBuildingType->build_time . " SECONDS'"),

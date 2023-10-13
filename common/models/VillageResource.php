@@ -18,6 +18,12 @@ use Yii;
 class VillageResource extends \yii\db\ActiveRecord
 {
 
+    public const FIELD_VILLAGE_ID = 'village_id';
+    public const FIELD_RESOURCE_TYPE = 'resource_type';
+    public const FIELD_VALUE = 'value';
+    public const FIELD_MAX_VALUE = 'max_value';
+    public const FIELD_GENERATION_PER_HOUR = 'generation_per_hour';
+
     public const RESOURCE_WOOD = 'wood';
     public const RESOURCE_CLAY = 'clay';
     public const RESOURCE_IRON = 'iron';

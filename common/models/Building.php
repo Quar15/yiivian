@@ -110,6 +110,11 @@ class Building extends \yii\db\ActiveRecord
         return BuildingType::findOne($nextLevelBuildingTypeId);
     }
 
+    public function getUpgradeCosts()
+    {
+        return $this->getOneBuildingType()->getBuildingCosts();
+    }
+
     public function upgrade(): bool
     {
         $nextLevelBuildingTypeId = $this->getOneBuildingType()->next_level_building_type_id;
