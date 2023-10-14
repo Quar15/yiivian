@@ -9,6 +9,8 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\helpers\Url;
 use common\models\Queue;
+use common\models\Village;
+use \LogicException;
 use yii\db\Expression;
 
 /**
@@ -84,8 +86,8 @@ class QueueController extends Controller
             }
 
             $villageResources[$i]->value -= $costs[$i]->value;
-            if (! $villageResources[$i]->save()){
-                Yii::$app->session->setFlash('error', "Something wennt wrong");
+            if (! $villageResources[$i]->save()) {
+                Yii::$app->session->setFlash('error', "Something went wrong");
                 return $this->redirect(Url::previous());
             }
         }
@@ -143,12 +145,30 @@ class QueueController extends Controller
             return $this->redirect(Url::previous());
         }
         
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $relatedVillage = Village::findOne($queueEntry->village_id);
+            $nextLevelBuildingType = Building::findOne($queueEntry->product_id)->getOneNextLevelBuildingType();  
+            $costs = $nextLevelBuildingType->getBuildingCosts()->all();
+            $villageResources = $relatedVillage->getVillageResources()->all();
+
+            for ($i=0; $i < count($costs); $i++) {
+                $villageResources[$i]->value += ($costs[$i]->value * 0.9);
+                if (! $villageResources[$i]->save()) {
+                    throw new LogicException("Village Resources could not save");
+                }
+            }
+            $transaction->commit();
+        } catch(\Exception $e) {
+            $transaction->rollBack();
+            Yii::$app->session->setFlash('error', "Something went wrong");
+            return $this->redirect(Url::previous());
+        }
+        
         if(! $queueEntry->delete()) {
             Yii::$app->session->setFlash('error', "Something went wrong");
             return $this->redirect(Url::previous());
         }
-
-        // @TODO: Return resources (90%)
 
         return var_dump(Yii::$app->request->post());
         // @TODO: Return html responses for HTMX
