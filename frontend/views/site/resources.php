@@ -3,6 +3,7 @@
 use frontend\widgets\ResourceProductionStatusWidget;
 use frontend\widgets\ResourceLayoutWidget;
 use frontend\widgets\BuildQueueWidget;
+use frontend\widgets\BuildingDetailsWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -32,3 +33,4 @@ $this->title = 'Resources';
     <input type="number" name="queue_entry_id"/>
 </form>
 <?= BuildQueueWidget::widget([BuildQueueWidget::VILLAGE_QUEUE_BUILDINGS_LIST => $villageQueueBuildingsList]);  ?>
+<?= BuildingDetailsWidget::widget(); ?>

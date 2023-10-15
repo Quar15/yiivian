@@ -159,3 +159,31 @@
 .build-queue .build-queue-element p:nth-child(3) {
     min-width: 200px;
 }
+
+.building-details {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--background-color);
+    padding: 30px;
+}
+
+.building-details .exit-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    margin: 5px 10px;
+}
+
+.building-details .exit-btn:hover {
+    cursor: pointer;
+}
+
+.building-details .buttons {
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

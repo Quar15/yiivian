@@ -2,6 +2,7 @@
     --text-main: #333;
     --text-main-dark: #CCC;
     --text-hover: #1111a5;
+    --background-color: #EEE;
     --background-main-dark: #111;
     --error-flash-bg-color: #f5c6cb;
     --error-flash-color: #721c24;
@@ -16,6 +17,10 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+}
+
+.hidden {
+    display: none;
 }
 
 h3 {
