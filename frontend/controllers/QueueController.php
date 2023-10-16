@@ -10,6 +10,8 @@ use yii\web\Controller;
 use yii\helpers\Url;
 use common\models\Queue;
 use common\models\Village;
+use Exception;
+use frontend\widgets\BuildQueueWidget;
 use \LogicException;
 use yii\db\Expression;
 
@@ -46,7 +48,7 @@ class QueueController extends Controller
     {
         if(! isset($_POST['building_id'])) {
             Yii::$app->session->setFlash('error', "Building ID not provided");
-            return $this->redirect(Url::previous());
+            return '';
         }
 
         $buildingId = $_POST['building_id'];
@@ -63,34 +65,22 @@ class QueueController extends Controller
 
         if(! $relatedVillage) {
             Yii::$app->session->setFlash('error', "Building ID is not owned by this account");
-            return $this->redirect(Url::previous());
+            return '';
         }
 
         $userId = Yii::$app->user->identity->id;
-        $villageQueueEntriesCount = Queue::getWaitingUserEntriesOfType($userId, Queue::QUEUE_TYPE_BUILDING)
-            ->andWhere([Queue::FIELD_VILLAGE_ID => $relatedVillage->id])
-            ->count();
+        $villageQueueEntriesCount = Queue::getWaitingUserEntriesOfTypeFromVillage(
+            $userId, 
+            Queue::QUEUE_TYPE_BUILDING, 
+            $relatedVillage->id
+        )->count();
         if($villageQueueEntriesCount >= self::QUEUE_LIMIT_PER_USER) {
             Yii::$app->session->setFlash('error', "Queue is already full");
-            return $this->redirect(Url::previous());
+            return $this->renderVillageQueue($relatedVillage->id);
         }
 
         $nextLevelBuildingType = Building::findOne($buildingId)->getOneNextLevelBuildingType();
         
-        $costs = $nextLevelBuildingType->getBuildingCosts()->all();
-        $villageResources = $relatedVillage->getVillageResources()->all();
-        for ($i=0; $i < count($costs); $i++) {
-            if ($costs[$i]->value > $villageResources[$i]->value){
-                Yii::$app->session->setFlash('error', "Not enough resources");
-                return $this->redirect(Url::previous());
-            }
-
-            $villageResources[$i]->value -= $costs[$i]->value;
-            if (! $villageResources[$i]->save()) {
-                Yii::$app->session->setFlash('error', "Something went wrong");
-                return $this->redirect(Url::previous());
-            }
-        }
 
         $duplicate = Queue::find()
             ->andWhere([Queue::FIELD_USER_ID => $userId])
@@ -103,25 +93,52 @@ class QueueController extends Controller
 
         if ($duplicate) {
             Yii::$app->session->setFlash('error', "Already upgrading the building");
-            return $this->redirect(Url::previous());
+            return $this->renderVillageQueue($relatedVillage->id);
         }
 
-        $queueModel = Queue::create(
-            $userId, 
-            $relatedVillage->id,
-            $buildingId,
-            Queue::QUEUE_TYPE_BUILDING,
-            new Expression("NOW() + INTERVAL '" . $nextLevelBuildingType->build_time . " SECONDS'"),
-            $nextLevelBuildingType->finish_build_action . ' ' . $buildingId
-        );
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $costs = $nextLevelBuildingType->getBuildingCosts()->all();
+            $villageResources = $relatedVillage->getVillageResources()->all();
+            for ($i=0; $i < count($costs); $i++) {
+                if ($costs[$i]->value > $villageResources[$i]->value){
+                    Yii::$app->session->setFlash('error', "Not enough resources");
+                    throw new LogicException("Not enough resources");
+                }
 
-        if(! $queueModel->save()) {
-            Yii::$app->session->setFlash('error', "Something went wrong");
-            return $this->redirect(Url::previous());
+                $villageResources[$i]->value -= $costs[$i]->value;
+                if (! $villageResources[$i]->save()) {
+                    Yii::$app->session->setFlash('error', "Something went wrong");
+                    throw new Exception("Something went wrong");
+                }
+            }
+            $queueModel = Queue::create(
+                $userId, 
+                $relatedVillage->id,
+                $buildingId,
+                Queue::QUEUE_TYPE_BUILDING,
+                new Expression("NOW() + INTERVAL '" . $nextLevelBuildingType->build_time . " SECONDS'"),
+                $nextLevelBuildingType->finish_build_action . ' ' . $buildingId
+            );
+
+            if(! $queueModel->save()) {
+                Yii::$app->session->setFlash('error', "Something went wrong");
+                throw new Exception("Something went wrong");
+            }
+
+            $transaction->commit();
+        } catch (Exception $e) {
+            $transaction->rollBack();
         }
 
-        return var_dump(Yii::$app->request->post());
-        // @TODO: Return html responses for HTMX
+        return $this->renderVillageQueue($relatedVillage->id);
+    }
+
+    private function renderVillageQueue($villageId): string
+    {
+        $villageQueue = Queue::getVillageQueueBuildingsList($villageId);
+        $queueWidget = BuildQueueWidget::widget([BuildQueueWidget::VILLAGE_QUEUE_BUILDINGS_LIST => $villageQueue]);
+        return $queueWidget;
     }
 
     public const ROUTE_CANCEL_UPGRADE_BUILDING = self::ROUTE_BASE . self::ACTION_CANCEL_UPGRADE_BUILDING;

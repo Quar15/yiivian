@@ -92,19 +92,25 @@ class Queue extends ActiveRecord
     public static function getUserEntries(int $userId)
     {
         return Queue::find()
-            ->where([self::FIELD_USER_ID => $userId]);
+            ->andWhere([self::FIELD_USER_ID => $userId]);
     }
 
     public static function getWaitingUserEntries(int $userId)
     {
         return Queue::getUserEntries($userId)
-            ->where([self::FIELD_IS_PROCESSED => false]);
+            ->andWhere([self::FIELD_IS_PROCESSED => false]);
     }
 
     public static function getWaitingUserEntriesOfType(int $userId, int $queueType)
     {
         return Queue::getWaitingUserEntries($userId)
-            ->where([self::FIELD_QUEUE_TYPE => $queueType]);
+            ->andWhere([self::FIELD_QUEUE_TYPE => $queueType]);
+    }
+
+    public static function getWaitingUserEntriesOfTypeFromVillage(int $userId, int $queueType, int $villageId)
+    {
+        return Queue::getWaitingUserEntriesOfType($userId, $queueType)
+            ->andWhere([self::FIELD_VILLAGE_ID => $villageId]);
     }
 
     public static function create(int $userId, int $villageId, int $productId, int $queueType, $executionTimestamp, string $command): Queue
@@ -118,5 +124,29 @@ class Queue extends ActiveRecord
         $queue->command = $command;
         return $queue;
     }
-}
 
+    public static function getVillageQueueBuildingsList(int $villageId)
+    {
+        $villageQueueEntriesList = Queue::getWaitingUserEntriesOfType(\Yii::$app->user->id, Queue::QUEUE_TYPE_BUILDING)
+            ->where([Queue::FIELD_VILLAGE_ID => $villageId])
+            ->all();
+
+        $villageQueueBuildingsList = [];
+        foreach ($villageQueueEntriesList as $entry) {
+            $timestamp = strtotime($entry->execution_timestamp);
+            $building = Building::find()
+                ->andWhere([Building::FIELD_ID => $entry->product_id])
+                ->cache(max($timestamp - time(), 1))
+                ->limit(1)
+                ->one();
+
+            $villageQueueBuildingsList[] = [
+                'id' => $entry->id,
+                'building_name' => $building->getBuildingTypeInfo()->one()->name, 
+                'building_level' => $building->level + 1, 
+                'endTimestamp' => $timestamp,
+            ];
+        }
+        return $villageQueueBuildingsList;
+    }
+}

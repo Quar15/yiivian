@@ -28,9 +28,10 @@ $this->title = 'Resources';
     <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->getCsrfToken()); ?>
     <input type="number" name="building_id"/>
 </form>
-<form action="<?= Url::to('queue/cancel-upgrade-building') ?>" method="POST">
+<form hx-post="<?= Url::to('queue/upgrade-building') ?>" hx-target="#build-queue">
     <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->getCsrfToken()); ?>
-    <input type="number" name="queue_entry_id"/>
+    <input type="number" name="building_id"/>
+    Upgrade
 </form>
 <?= BuildQueueWidget::widget([BuildQueueWidget::VILLAGE_QUEUE_BUILDINGS_LIST => $villageQueueBuildingsList]);  ?>
 <?= BuildingDetailsWidget::widget(); ?>

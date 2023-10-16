@@ -19,7 +19,7 @@ class BuildQueueWidget extends Widget
 
     public function run(): string
     {
-        $elements = '<div class="build-queue">';
+        $elements = '<div id="build-queue" class="build-queue">';
         $elements .= '<h3>Building:</h3>';
         $elements .= '<div class="build-queue-list">';
         foreach ($this->villageQueueBuildingsList as $entry) {
