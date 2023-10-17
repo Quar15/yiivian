@@ -4,6 +4,7 @@ namespace frontend\widgets;
 
 use yii\base\Widget;
 use Yii;
+use yii\helpers\Html;
 
 class FlashMessagesWidget extends Widget
 {
@@ -14,7 +15,7 @@ class FlashMessagesWidget extends Widget
 
     public function run(): string
     {
-        $content = '<div class="flash-messages">';
+        $content = '<div class="flash-messages" hx-trigger="newFlashMsg from:body" hx-post="/flash/list" hx-swap="afterbegin" hx-include="#csrf">';
         foreach(Yii::$app->session->getAllFlashes() as $key => $message) {
             $content .= $this->createFlash($key, $message);
         }

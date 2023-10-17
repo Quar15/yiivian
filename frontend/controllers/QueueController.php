@@ -46,6 +46,7 @@ class QueueController extends Controller
     public const ROUTE_UPGRADE_BUILDING = self::ROUTE_BASE . self::ACTION_UPGRADE_BUILDING;
     public function actionUpgradeBuilding()
     {
+        Yii::$app->response->headers->add('HX-Trigger', 'newFlashMsg');
         if(! isset($_POST['building_id'])) {
             Yii::$app->session->setFlash('error', "Building ID not provided");
             return '';
@@ -80,7 +81,10 @@ class QueueController extends Controller
         }
 
         $nextLevelBuildingType = Building::findOne($buildingId)->getOneNextLevelBuildingType();
-        
+        if (! $nextLevelBuildingType) {
+            Yii::$app->session->setFlash('error', "That building cannot be upgraded");
+            return $this->renderVillageQueue($relatedVillage->id);
+        } 
 
         $duplicate = Queue::find()
             ->andWhere([Queue::FIELD_USER_ID => $userId])

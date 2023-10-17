@@ -34,6 +34,7 @@ $currVillageResourceSet = $resourceSets[array_key_first($resourceSets)];
 </head>
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
+    <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->getCsrfToken(), ['id' => "csrf"]) ?> 
     <nav>
         <div class="buttons">
             <a class="nav-main-btn" href="<?= Url::to(['site/resources']) ?>"><div class="main-btn-border"><?= Html::img("@web/img/icon-placeholder.png") ?></div><h2>Resources</h2></a>

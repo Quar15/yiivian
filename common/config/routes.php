@@ -1,5 +1,6 @@
 <?php
 
+use frontend\controllers\FlashController;
 use frontend\controllers\QueueController;
 use frontend\controllers\SiteController;
 
@@ -13,5 +14,6 @@ return [
     'POST upgrade-building' => QueueController::ROUTE_UPGRADE_BUILDING,
     'POST queue/upgrade-building' => QueueController::ROUTE_UPGRADE_BUILDING,
     'POST queue/cancel-upgrade-building' => QueueController::ROUTE_CANCEL_UPGRADE_BUILDING,
+    'POST flash/list' => FlashController::ROUTE_LIST,
 ];
 
