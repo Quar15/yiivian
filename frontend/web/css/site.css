@@ -1,8 +1,8 @@
 :root{
     --text-main: #333;
-    --text-main-dark: #CCC;
+    --text-main-dark: #ccc;
     --text-hover: #1111a5;
-    --background-color: #EEE;
+    --background-color: #eee;
     --background-main-dark: #111;
     --error-flash-bg-color: #f5c6cb;
     --error-flash-color: #721c24;
